@@ -7,6 +7,7 @@ import static java.util.Objects.nonNull;
 import org.apache.commons.collections4.MapUtils;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 
@@ -14,8 +15,8 @@ public abstract class BaseRestClient {
 	
 	
 	public URI buildUri(String host, String apiUrl, Map<String, Object> queryParam) {
-		StringBuilder pathBuilder = new StringBuilder(apiUrl);
-		UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromHttpUrl(apiUrl).path(pathBuilder.toString());
+		StringBuilder pathBuilder = new StringBuilder().append(apiUrl);
+		UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromHttpUrl(host).path(pathBuilder.toString());
 		
 		if(MapUtils.isNotEmpty(queryParam)) {
 			queryParam.forEach((k,v) -> {
@@ -57,5 +58,9 @@ public abstract class BaseRestClient {
 	protected abstract <T> T makecall(URI buildUri, HttpMethod get, HttpEntity<String> entity, Class<T> responseType);
 
 	protected abstract HttpEntity<String> prepareEntityForJsonBody(String bodyJson, Map<String, String> headers);
+
+	public RestTemplate initialiseTemplate() {
+		return new RestTemplate();
+	}
 
 }

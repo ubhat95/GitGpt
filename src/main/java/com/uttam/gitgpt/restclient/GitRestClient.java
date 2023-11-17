@@ -24,7 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class GitRestClient extends BaseRestClient {
 	
-	@Value("${git.hostname}")
+	@Value("$git.hostname")
 	private String hostname;	
 	
 	
@@ -43,7 +43,7 @@ public class GitRestClient extends BaseRestClient {
 
 	@Override
 	protected HttpEntity<String> prepareEntityForJsonBody(String bodyJson, Map<String, String> headers) {
-		MultiValueMap<String, String> finalHeaders = getDeafaultHeaders();
+		MultiValueMap<String, String> finalHeaders = getDefaultHeaders();
 		if(MapUtils.isNotEmpty(headers)) {
 			finalHeaders.setAll(headers);
 		}
@@ -52,7 +52,7 @@ public class GitRestClient extends BaseRestClient {
 												: new HttpEntity<>(bodyJson, finalHeaders);
 	}
 
-	private MultiValueMap<String, String> getDeafaultHeaders() {
+	private MultiValueMap<String, String> getDefaultHeaders() {
 		//All default headers - ideally authorization tokens;
 		HttpHeaders headers =  new HttpHeaders();
 		headers.add(CACHE_CONTROL, hostname);
